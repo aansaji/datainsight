@@ -10,9 +10,27 @@
 
 <p>Welcome, {{ user }}</p>
 
+<form method="GET" action="{{ url_for('history') }}">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search filename..."
+        value="{{ search }}">
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+<br>
+
 <table border="1" cellpadding="10">
 
 <th>View</th>
+<th>Actions</th>
+
 
 <tr>
     <th>Filename</th>
@@ -27,7 +45,29 @@
 </tr>
 
 {% for item in history %}
+<td>
+    <a href="{{ url_for('view_dataset', upload_id=item['id']) }}">
+        View
+    </a>
+    |
+    <a href="{{ url_for('delete_dataset', upload_id=item['id']) }}"
+       onclick="return confirm('Are you sure you want to delete this dataset?');">
+        Delete
+    </a>
+    <a href="{{ url_for('export_excel', upload_id=item['id']) }}">
+    Export Excel
+</a>
 
+<a href="{{ url_for('export_pdf', upload_id=item['id']) }}">
+    Export PDF
+</a>
+<a href="{{ url_for('clean_dataset', upload_id=item['id']) }}">
+    Clean Dataset
+</a>
+<a href="{{ url_for('insights', upload_id=item['id']) }}">
+    AI Insights
+</a>
+</td>
 <tr>
 
 <td>{{ item["filename"] }}</td>
