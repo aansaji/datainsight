@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dataset Preview</title>
+</head>
+
+<body>
+
+<h1>{{ filename }}</h1>
+
+<p><strong>Total Rows:</strong> {{ rows }}</p>
+<p><strong>Total Columns:</strong> {{ columns }}</p>
+
+{{ table|safe }}
+
+<br><br>
+
+<a href="{{ url_for('history') }}">Back to History</a>
+
+</body>
+</html>

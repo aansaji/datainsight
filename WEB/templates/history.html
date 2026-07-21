@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload History</title>
+</head>
+
+<body>
+
+<h1>Upload History</h1>
+
+<p>Welcome, {{ user }}</p>
+
+<table border="1" cellpadding="10">
+
+<th>View</th>
+
+<tr>
+    <th>Filename</th>
+    <th>Rows</th>
+    <th>Columns</th>
+    <th>Size (KB)</th>
+    <th>Average</th>
+    <th>Maximum</th>
+    <th>Minimum</th>
+    <th>Median</th>
+    <th>Date</th>
+</tr>
+
+{% for item in history %}
+
+<tr>
+
+<td>{{ item["filename"] }}</td>
+
+<td>{{ item["rows"] }}</td>
+
+<td>{{ item["columns"] }}</td>
+
+<td>{{ item["file_size"] }}</td>
+
+<td>{{ item["average"] }}</td>
+
+<td>{{ item["maximum"] }}</td>
+
+<td>{{ item["minimum"] }}</td>
+
+<td>{{ item["median"] }}</td>
+
+<td>{{ item["upload_date"] }}</td>
+
+<td>
+    <a href="{{ url_for('view_dataset', upload_id=item['id']) }}">
+        View
+    </a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+</body>
+</html>
