@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DataInsight | Register</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body class="auth-page">
+
+<div class="auth-wrapper">
+
+    <!-- LEFT SIDE -->
+
+    <div class="auth-left">
+
+        <h1>
+
+            <i class="fa-solid fa-chart-simple"></i>
+
+            Data<span>Insight</span>
+
+        </h1>
+
+        <div class="tag">
+
+            Professional Data Analytics Platform
+
+        </div>
+
+        <h2>
+
+            Start Your
+            <span>Data Journey</span>
+
+        </h2>
+
+        <p>
+
+            Join DataInsight to upload datasets, clean data automatically,
+            generate reports and explore AI-powered analytics from one
+            beautiful dashboard.
+
+        </p>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-upload"></i>
+
+            <div>
+
+                <h3>Easy Upload</h3>
+
+                <p>Upload CSV datasets in seconds.</p>
+
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            <div>
+
+                <h3>Interactive Charts</h3>
+
+                <p>Visualize trends automatically.</p>
+
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <div>
+
+                <h3>AI Insights</h3>
+
+                <p>Smart recommendations instantly.</p>
+
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-file-export"></i>
+
+            <div>
+
+                <h3>Professional Reports</h3>
+
+                <p>Export PDF and Excel reports.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- RIGHT SIDE -->
+
+    <div class="auth-right">
+
+        <div class="login-card">
+
+            <div class="login-icon">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+            </div>
+
+            <h2>Create Account</h2>
+
+            <p>
+
+                Register to access your analytics dashboard
+
+            </p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+
+            <div class="flash">
+
+                {{ message }}
+
+            </div>
+
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('register') }}" method="POST">
+
+                <label>Full Name</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required>
+
+                </div>
+
+                <label>Email Address</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+                <label>Password</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Create a password"
+                        required>
+
+                </div>
+
+                <button class="login-btn">
+
+                    Create Account
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+            <div class="divider">
+
+                Already have an account?
+
+            </div>
+
+            <a href="{{ url_for('login') }}">
+
+                <button class="register-btn">
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    Login Instead
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

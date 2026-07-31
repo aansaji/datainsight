@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataInsight Dashboard</title>
+
+    <!-- CSS -->
+   <link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <header class="header">
+        <h2><i class="fa-solid fa-chart-line"></i> DataInsight</h2>
+
+        <div class="profile">
+            <i class="fa-solid fa-bell"></i>
+            <i class="fa-solid fa-user-circle"></i>
+            <span>Guest</span>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <h3>Menu</h3>
+
+        <ul>
+            <li><i class="fa-solid fa-house"></i> Dashboard</li>
+            <li><i class="fa-solid fa-upload"></i> Upload Data</li>
+            <li><i class="fa-solid fa-chart-column"></i> Analytics</li>
+            <li><i class="fa-solid fa-table"></i> Dataset</li>
+            <li><i class="fa-solid fa-file"></i> Reports</li>
+            <li><i class="fa-solid fa-gear"></i> Settings</li>
+        </ul>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+
+        <!-- Dashboard Cards -->
+        <section class="cards">
+
+            <div class="card">
+                <h3>Total Records</h3>
+                <h2 id="records">0</h2>
+            </div>
+
+            <div class="card">
+                <h3>Total Columns</h3>
+                <h2 id="columns">0</h2>
+            </div>
+
+            <div class="card">
+                <h3>Average</h3>
+                <h2 id="average">0</h2>
+            </div>
+
+            <div class="card">
+                <h3>Maximum</h3>
+                <h2 id="maximum">0</h2>
+            </div>
+
+            <div class="card">
+                <h3>Minimum</h3>
+                <h2 id="minimum">0</h2>
+            </div>
+
+            <div class="card">
+                <h3>Uploads</h3>
+                <h2 id="uploads">0</h2>
+            </div>
+
+        </section>
+
+        <!-- Upload Section -->
+        <section class="upload-box">
+
+            <h2>Upload Dataset</h2>
+
+            <input type="file" id="csvFile" accept=".csv">
+
+            <button onclick="loadCSV()">
+                Upload & Analyze
+            </button>
+
+        </section>
+
+        <!-- Search -->
+        <section class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search dataset..."
+            >
+
+        </section>
+
+        <!-- Table -->
+        <section class="table-box">
+
+            <h2>Dataset</h2>
+
+            <table id="dataTable"></table>
+
+        </section>
+
+        <!-- Charts -->
+        <section class="charts">
+
+            <div class="chart">
+                <h3>Bar Chart</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+
+            <div class="chart">
+                <h3>Pie Chart</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+
+        </section>
+
+        <!-- Activity -->
+        <section class="activity">
+
+            <h2>Recent Activity</h2>
+
+            <ul>
+                <li>📂 Waiting for dataset upload...</li>
+            </ul>
+
+        </section>
+
+    </main>
+
+</div>
+
+<footer class="footer">
+
+    © 2026 DataInsight Dashboard
+
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Insights</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<h1>AI Dataset Insights</h1>
+
+<h2>{{ upload["filename"] }}</h2>
+
+<ul>
+{% for insight in insights %}
+    <li>{{ insight }}</li>
+{% endfor %}
+</ul>
+
+<br>
+
+<a href="{{ url_for('history') }}">
+    Back to History
+</a>
+
+</body>
+</html>

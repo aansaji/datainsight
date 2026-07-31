@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DataInsight | Upload History</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Existing CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body class="history-page">
+
+<div class="container">
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <h2>DataInsight</h2>
+
+        </div>
+
+        <ul>
+
+            <li>
+
+                <a href="{{ url_for('dashboard') }}">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="{{ url_for('history') }}">
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    <span>Upload History</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('profile') }}">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <span>Profile</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('logout') }}">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="header">
+
+        <div>
+
+            <h2>Upload History</h2>
+
+            <p>
+
+                View and manage your previously uploaded datasets
+
+            </p>
+
+        </div>
+
+        <div class="profile">
+
+            <i class="fa-solid fa-bell"></i>
+
+            <i class="fa-solid fa-user-circle fa-2x"></i>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="content history-content">
+
+
+        <!-- =====================================
+             PAGE INTRO
+        ====================================== -->
+
+        <div class="history-intro">
+
+            <div>
+
+                <h1>
+
+                    <i class="fa-solid fa-database"></i>
+
+                    Dataset History
+
+                </h1>
+
+                <p>
+
+                    Welcome back, <strong>{{ user }}</strong>.
+                    Here you can view and manage all your uploaded datasets.
+
+                </p>
+
+            </div>
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="history-dashboard-btn">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Dashboard
+
+            </a>
+
+        </div>
+
+
+        <!-- =====================================
+             SEARCH
+        ====================================== -->
+
+        <div class="history-search">
+
+            <form
+                method="GET"
+                action="{{ url_for('history') }}">
+
+                <div class="history-search-input">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Search dataset by filename..."
+                        value="{{ search }}">
+
+                </div>
+
+                <button type="submit">
+
+                    <i class="fa-solid fa-search"></i>
+
+                    Search
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================
+             DATASET COUNT
+        ====================================== -->
+
+        <div class="history-heading">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-folder-open"></i>
+
+                    Your Datasets
+
+                </h2>
+
+                <p>
+
+                    {% if history %}
+
+                        {{ history|length }} dataset(s) found
+
+                    {% else %}
+
+                        No datasets found
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             DATASET TABLE
+        ====================================== -->
+
+        <div class="history-table-wrapper">
+
+            {% if history %}
+
+            <table class="history-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Dataset</th>
+
+                        <th>Rows</th>
+
+                        <th>Columns</th>
+
+                        <th>Size</th>
+
+                        <th>Average</th>
+
+                        <th>Maximum</th>
+
+                        <th>Minimum</th>
+
+                        <th>Median</th>
+
+                        <th>Date</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for item in history %}
+
+                    <tr>
+
+                        <!-- Dataset -->
+
+                        <td>
+
+                            <div class="dataset-name">
+
+                                <div class="dataset-icon">
+
+                                    <i class="fa-solid fa-file-csv"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <strong>
+
+                                        {{ item["filename"] }}
+
+                                    </strong>
+
+                                    <span>
+
+                                        CSV Dataset
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- Rows -->
+
+                        <td>
+
+                            <span class="stat-value">
+
+                                {{ item["rows"] }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- Columns -->
+
+                        <td>
+
+                            <span class="stat-value">
+
+                                {{ item["columns"] }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- Size -->
+
+                        <td>
+
+                            {{ item["file_size"] }} KB
+
+                        </td>
+
+
+                        <!-- Average -->
+
+                        <td>
+
+                            {{ item["average"] }}
+
+                        </td>
+
+
+                        <!-- Maximum -->
+
+                        <td>
+
+                            {{ item["maximum"] }}
+
+                        </td>
+
+
+                        <!-- Minimum -->
+
+                        <td>
+
+                            {{ item["minimum"] }}
+
+                        </td>
+
+
+                        <!-- Median -->
+
+                        <td>
+
+                            {{ item["median"] }}
+
+                        </td>
+
+
+                        <!-- Date -->
+
+                        <td>
+
+                            <span class="date-value">
+
+                                <i class="fa-regular fa-calendar"></i>
+
+                                {{ item["upload_date"] }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="history-actions">
+
+                                <a
+                                    href="{{ url_for('view_dataset', upload_id=item['id']) }}"
+                                    class="action-view"
+                                    title="View Dataset">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+
+                                <a
+                                    href="{{ url_for('insights', upload_id=item['id']) }}"
+                                    class="action-insight"
+                                    title="AI Insights">
+
+                                    <i class="fa-solid fa-lightbulb"></i>
+
+                                </a>
+
+
+                                <a
+                                    href="{{ url_for('export_excel', upload_id=item['id']) }}"
+                                    class="action-excel"
+                                    title="Export Excel">
+
+                                    <i class="fa-solid fa-file-excel"></i>
+
+                                </a>
+
+
+                                <a
+                                    href="{{ url_for('export_pdf', upload_id=item['id']) }}"
+                                    class="action-pdf"
+                                    title="Export PDF">
+
+                                    <i class="fa-solid fa-file-pdf"></i>
+
+                                </a>
+
+
+                                <a
+                                    href="{{ url_for('clean_dataset', upload_id=item['id']) }}"
+                                    class="action-clean"
+                                    title="Clean Dataset">
+
+                                    <i class="fa-solid fa-broom"></i>
+
+                                </a>
+
+
+                                <a
+                                    href="{{ url_for('delete_dataset', upload_id=item['id']) }}"
+                                    class="action-delete"
+                                    title="Delete Dataset"
+                                    onclick="return confirm('Are you sure you want to delete this dataset?');">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+
+            <!-- =================================
+                 EMPTY STATE
+            ================================== -->
+
+            <div class="empty-history">
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-folder-open"></i>
+
+                </div>
+
+                <h2>No Datasets Found</h2>
+
+                <p>
+
+                    You haven't uploaded any datasets yet.
+
+                </p>
+
+                <a href="{{ url_for('dashboard') }}">
+
+                    <i class="fa-solid fa-upload"></i>
+
+                    Upload Dataset
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =====================================
+             FOOTER
+        ====================================== -->
+
+        <div class="history-footer">
+
+            <span>
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Your datasets are securely managed
+
+            </span>
+
+            <span>
+
+                DataInsight
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </span>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

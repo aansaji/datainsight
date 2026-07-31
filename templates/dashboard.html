@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>DataInsight Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Chart.js -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ======================
+            SIDEBAR
+    ======================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <h2>DataInsight</h2>
+
+        </div>
+
+        <ul>
+
+            <li class="active">
+
+                <a href="{{ url_for('dashboard') }}">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('history') }}">
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    Upload History
+
+                </a>
+
+            </li>
+
+            {% if upload %}
+
+            <li>
+
+                <a href="{{ url_for('view_dataset', upload_id=upload['id']) }}">
+
+                    <i class="fa-solid fa-table"></i>
+
+                    View Dataset
+
+                </a>
+
+            </li>
+
+           
+
+            {% endif %}
+
+            <li>
+
+                <a href="{{ url_for('profile') }}">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Profile
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('logout') }}">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- ======================
+            HEADER
+    ======================= -->
+
+    <header class="header">
+
+        <div>
+
+            <h2>Dashboard</h2>
+
+            <p>
+
+                Welcome back,
+
+                <strong>{{ user }}</strong>
+
+            </p>
+
+        </div>
+
+        
+
+    </header>
+
+    <!-- ======================
+            CONTENT
+    ======================= -->
+
+    <main class="content">
+
+            <!-- ======================
+            DASHBOARD CARDS
+    ======================= -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <i class="fa-solid fa-file-circle-plus fa-2x"></i>
+
+            <h3>Total Uploads</h3>
+
+            <h2>{{ stats["total_uploads"] }}</h2>
+
+        </div>
+
+        <div class="card">
+
+            <i class="fa-solid fa-table fa-2x"></i>
+
+            <h3>Total Rows</h3>
+
+            <h2>{{ stats["total_rows"] }}</h2>
+
+        </div>
+
+        <div class="card">
+
+            <i class="fa-solid fa-columns fa-2x"></i>
+
+            <h3>Total Columns</h3>
+
+            <h2>{{ stats["total_columns"] }}</h2>
+
+        </div>
+
+        <div class="card">
+
+            <i class="fa-solid fa-hard-drive fa-2x"></i>
+
+            <h3>Storage Used</h3>
+
+            <h2>{{ "%.2f"|format(stats["total_size"]) }} KB</h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================
+            UPLOAD DATASET
+    ======================= -->
+
+    <div class="upload-box">
+
+        <h2>
+
+            <i class="fa-solid fa-upload"></i>
+
+            Upload CSV Dataset
+
+        </h2>
+
+        <br>
+
+        <form action="{{ url_for('upload') }}"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <input
+                type="file"
+                name="csv_file"
+                accept=".csv"
+                required>
+
+            <button type="submit">
+
+                Upload Dataset
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    
+
+    <!-- ======================
+            LATEST DATASET
+    ======================= -->
+
+    {% if upload %}
+
+    <div class="table-box">
+
+        <h2>
+
+            <i class="fa-solid fa-database"></i>
+
+            Latest Uploaded Dataset
+
+        </h2>
+
+        <br>
+
+        <table id="datasetTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Filename</th>
+
+                    <th>Rows</th>
+
+                    <th>Columns</th>
+
+                    <th>Size</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>{{ upload.filename }}</td>
+
+                    <td>{{ upload.rows }}</td>
+
+                    <td>{{ upload.columns }}</td>
+
+                    <td>{{ "%.2f"|format(upload.file_size) }} KB</td>
+
+                    <td>
+
+                        <a href="{{ url_for('view_dataset', upload_id=upload['id']) }}">
+
+                            <button>
+
+                                View
+
+                            </button>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% endif %}
+       
+
+    <!-- ======================
+            QUICK ACTIONS
+    ======================= -->
+
+    {% if upload %}
+
+    <div class="upload-box">
+
+        <h2>
+
+            <i class="fa-solid fa-bolt"></i>
+
+            Quick Actions
+
+        </h2>
+
+        <br>
+
+        <div class="action-buttons">
+
+            <a href="{{ url_for('view_dataset', upload_id=upload['id']) }}">
+
+                <button>
+
+                    <i class="fa-solid fa-table"></i>
+
+                    View Dataset
+
+                </button>
+
+            </a>
+
+            <a href="{{ url_for('insights', upload_id=upload['id']) }}">
+
+                <button>
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                    AI Insights
+
+                </button>
+
+            </a>
+
+            <a href="{{ url_for('export_excel', upload_id=upload['id']) }}">
+
+                <button>
+
+                    <i class="fa-solid fa-file-excel"></i>
+
+                    Export Excel
+
+                </button>
+
+            </a>
+
+           <a href="{{ url_for('export_pdf', upload_id=upload['id']) }}">
+    <button>
+        <i class="fa-solid fa-file-pdf"></i>
+        Export PDF
+    </button>
+</a>
+
+            
+
+            <a href="{{ url_for('clean_dataset', upload_id=upload['id']) }}">
+
+                <button>
+
+                    <i class="fa-solid fa-broom"></i>
+
+                    Clean Dataset
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- ======================
+            RECENT ACTIVITY
+    ======================= -->
+
+    <div class="activity">
+
+        <h2>
+
+            <i class="fa-solid fa-clock"></i>
+
+            Recent Activity
+
+        </h2>
+
+        <br>
+
+        <ul>
+
+            {% if upload %}
+
+            <li>
+
+                ✔ Latest dataset uploaded:
+
+                <strong>{{ upload.filename }}</strong>
+
+            </li>
+
+            <li>
+
+                ✔ Rows:
+
+                <strong>{{ upload.rows }}</strong>
+
+            </li>
+
+            <li>
+
+                ✔ Columns:
+
+                <strong>{{ upload.columns }}</strong>
+
+            </li>
+
+            <li>
+
+                ✔ File Size:
+
+                <strong>{{ "%.2f"|format(upload.file_size) }} KB</strong>
+
+            </li>
+
+            {% else %}
+
+            <li>
+
+                No datasets uploaded yet.
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </div>
+
+
+</main>
+
+</div>
+
+{% if upload %}
+<script>
+const UPLOAD_ID = {{ upload["id"] }};
+</script>
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

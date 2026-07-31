@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{{ filename }} | DataInsight</title>
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Main Dashboard CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- View Dataset CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/view_dataset.css') }}">
+
+    <!-- Chart.js -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="dashboard-wrapper">
+
+    <!-- Sidebar -->
+
+    {% include 'sidebar.html' ignore missing %}
+
+    <main class="main-content">
+
+        <!-- Top Navigation -->
+
+        <div class="topbar">
+
+            <div>
+
+                <a href="{{ url_for('history') }}"
+                   class="back-link">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to History
+
+                </a>
+
+            </div>
+
+            <div class="topbar-actions">
+
+                <a href="{{ url_for('export_xlsx', upload_id=upload_id) }}"
+                   class="btn-success">
+
+                    <i class="fa-solid fa-file-excel"></i>
+
+                    Export Excel
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Dataset Banner -->
+
+        <section class="dataset-banner">
+
+            <div class="banner-left">
+
+                <div class="dataset-icon">
+
+                    <i class="fa-solid fa-database"></i>
+
+                </div>
+
+                <div>
+
+                    <h1>{{ filename }}</h1>
+
+                    <p>
+
+                        Interactive dataset analysis, statistics,
+                        visualizations and AI insights.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="quality-score">
+
+                <span>Quality Score</span>
+
+                <h2 id="qualityScore">
+
+                    100%
+
+                </h2>
+
+            </div>
+
+        </section>
+
+        <!-- Statistics -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+
+                    <i class="fa-solid fa-table"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 id="rowsStat">
+
+                        {{ rows }}
+
+                    </h3>
+
+                    <span>Total Records</span>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+
+                    <i class="fa-solid fa-table-columns"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 id="columnsStat">
+
+                        {{ columns }}
+
+                    </h3>
+
+                    <span>Total Columns</span>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 id="missingStat">
+
+                        {{ missing_values }}
+
+                    </h3>
+
+                    <span>Missing Values</span>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+
+                    <i class="fa-solid fa-copy"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 id="duplicateStat">
+
+                        {{ duplicate_rows }}
+
+                    </h3>
+
+                    <span>Duplicate Rows</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+                <!-- ================================================= -->
+        <!-- FILTER SECTION -->
+        <!-- ================================================= -->
+
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+
+                        <i class="fa-solid fa-filter"></i>
+
+                        Dataset Filters
+
+                    </h2>
+
+                    <p>
+
+                        Filter your dataset to analyse specific records.
+
+                    </p>
+
+                </div>
+
+                <button id="resetFilters"
+                        class="btn-secondary">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                    Reset Filters
+
+                </button>
+
+            </div>
+
+            <div id="filterContainer"
+                 class="filter-grid">
+
+                <!-- JavaScript Creates Filters -->
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- AI INSIGHTS -->
+        <!-- ================================================= -->
+
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+
+                        <i class="fa-solid fa-lightbulb"></i>
+
+                        AI Dataset Insights
+
+                    </h2>
+
+                    <p>
+
+                        Automatically generated insights from your dataset.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="insightsContainer"
+                 class="insights-grid">
+
+                {% if insights %}
+
+                    {% for insight in insights %}
+
+                    <div class="insight-card">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span>
+
+                            {{ insight }}
+
+                        </span>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- CHART GRID -->
+        <!-- ================================================= -->
+
+        <section class="chart-grid">
+
+            <!-- BAR CHART -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+
+                            Category Analysis
+
+                        </h3>
+
+                        <span>
+
+                            Comparison of categorical values
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-body">
+
+                    <canvas id="barChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- DOUGHNUT -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+
+                            Category Distribution
+
+                        </h3>
+
+                        <span>
+
+                            Distribution of dataset values
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-body">
+
+                    <canvas id="doughnutChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- LINE CHART -->
+
+            <div class="chart-card full-width">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+
+                            Numeric Trend
+
+                        </h3>
+
+                        <span>
+
+                            Trend of selected numeric column
+
+                        </span>
+
+                    </div>
+
+                    <select id="lineColumnSelect"
+                            class="chart-select">
+
+                    </select>
+
+                </div>
+
+                <div class="chart-body">
+
+                    <canvas id="lineChart"></canvas>
+
+                </div>
+
+            </div>
+
+                    <!-- ============================================= -->
+        <!-- HISTOGRAM -->
+        <!-- ============================================= -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3>
+
+                        Histogram
+
+                    </h3>
+
+                    <span>
+
+                        Distribution of numeric values
+
+                    </span>
+
+                </div>
+
+                <select id="histogramColumn"
+                        class="chart-select">
+
+                </select>
+
+            </div>
+
+            <div class="chart-body">
+
+                <canvas id="histogramChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- DISTRIBUTION -->
+        <!-- ============================================= -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3>
+
+                        Distribution Curve
+
+                    </h3>
+
+                    <span>
+
+                        Visual representation of numeric distribution
+
+                    </span>
+
+                </div>
+
+                <select id="distributionColumn"
+                        class="chart-select">
+
+                </select>
+
+            </div>
+
+            <div class="chart-body">
+
+                <canvas id="distributionChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- BOX PLOT -->
+        <!-- ============================================= -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3>
+
+                        Five Number Summary
+
+                    </h3>
+
+                    <span>
+
+                        Min • Q1 • Median • Q3 • Max
+
+                    </span>
+
+                </div>
+
+                <select id="boxColumn"
+                        class="chart-select">
+
+                </select>
+
+            </div>
+
+            <div class="chart-body">
+
+                <canvas id="boxChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- SCATTER -->
+        <!-- ============================================= -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3>
+
+                        Scatter Plot
+
+                    </h3>
+
+                    <span>
+
+                        Relationship between two numeric columns
+
+                    </span>
+
+                </div>
+
+                <div class="chart-controls">
+
+                    <select id="scatterX"
+                            class="chart-select">
+
+                    </select>
+
+                    <select id="scatterY"
+                            class="chart-select">
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="chart-body">
+
+                <canvas id="scatterChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================================= -->
+    <!-- STATISTICAL SUMMARY -->
+    <!-- ============================================= -->
+
+    <section class="dashboard-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                    Statistical Summary
+
+                </h2>
+
+                <p>
+
+                    Summary statistics for numeric columns
+
+                </p>
+
+            </div>
+
+        </div>
+
+        {% if statistics %}
+
+        <div class="table-responsive">
+
+            <table class="statistics-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Column</th>
+
+                        <th>Average</th>
+
+                        <th>Median</th>
+
+                        <th>Minimum</th>
+
+                        <th>Maximum</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for stat in statistics %}
+
+                    <tr>
+
+                        <td>{{ stat.column }}</td>
+
+                        <td>{{ stat.average }}</td>
+
+                        <td>{{ stat.median }}</td>
+
+                        <td>{{ stat.minimum }}</td>
+
+                        <td>{{ stat.maximum }}</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <p class="empty-message">
+
+            No numeric columns found.
+
+        </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ============================================= -->
+    <!-- DATASET PREVIEW -->
+    <!-- ============================================= -->
+
+    <section class="dashboard-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-table"></i>
+
+                    Dataset Preview
+
+                </h2>
+
+                <p>
+
+                    Search and explore your uploaded dataset
+
+                </p>
+
+            </div>
+
+            <input
+                type="text"
+                id="tableSearch"
+                class="table-search"
+                placeholder="Search dataset...">
+
+        </div>
+
+        <div class="table-responsive">
+
+            {{ table|safe }}
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+
+<script>
+
+const UPLOAD_ID = {{ upload_id }};
+
+</script>
+
+<script src="{{ url_for('static', filename='js/view_dataset.js') }}"></script>
+
+</body>
+
+</html>

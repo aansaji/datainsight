@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DataInsight | Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body class="auth-page">
+
+<div class="auth-wrapper">
+
+    <!-- LEFT PANEL -->
+
+    <div class="auth-left">
+
+        <h1>
+            <i class="fa-solid fa-chart-simple"></i>
+            Data<span>Insight</span>
+        </h1>
+
+        <div class="tag">
+            Professional Data Analytics Platform
+        </div>
+
+        <h2>
+            Transform Data Into
+            <span>Powerful Insights</span>
+        </h2>
+
+        <p>
+
+            Upload datasets, visualize trends, clean data automatically,
+            generate reports and unlock AI-powered insights through one
+            elegant dashboard.
+
+        </p>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            <div>
+
+                <h3>Interactive Charts</h3>
+
+                <p>Visualize your datasets instantly.</p>
+
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-database"></i>
+
+            <div>
+
+                <h3>Dataset Management</h3>
+
+                <p>Upload, clean and organize files.</p>
+
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <div>
+
+                <h3>AI Insights</h3>
+
+                <p>Automatic insights & recommendations.</p>
+
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-file-export"></i>
+
+            <div>
+
+                <h3>Export Reports</h3>
+
+                <p>Download PDF & Excel reports.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- RIGHT PANEL -->
+
+    <div class="auth-right">
+
+        <div class="login-card">
+
+            <div class="login-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+            <h2>Welcome Back</h2>
+
+            <p>
+
+                Login to continue your analytics journey
+
+            </p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+
+            <div class="flash">
+
+                {{ message }}
+
+            </div>
+
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('login') }}" method="POST">
+
+                <label>Email Address</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+                <label>Password</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required>
+
+                </div>
+
+                <button class="login-btn">
+
+                    Login
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+            <div class="divider">
+
+                Don't have an account?
+
+            </div>
+
+            <a href="{{ url_for('register') }}">
+
+                <button class="register-btn">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Create New Account
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

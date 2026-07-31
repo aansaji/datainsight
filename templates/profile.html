@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | DataInsight</title>
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Main Theme -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Profile CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/profile.css') }}">
+
+</head>
+
+<body>
+
+<div class="profile-container">
+
+    <!-- ==========================
+            HEADER
+    =========================== -->
+
+    <header class="profile-header">
+
+        <div>
+
+            <h1>
+
+                <i class="fa-solid fa-user"></i>
+
+                My Profile
+
+            </h1>
+
+            <p>
+
+                Manage your DataInsight account.
+
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('dashboard') }}"
+           class="dashboard-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </header>
+
+
+    <!-- ==========================
+            PROFILE CARD
+    =========================== -->
+
+    <section class="profile-card">
+
+        <div class="profile-details">
+
+            <h2>
+
+                {{ session['user_name'] }}
+
+            </h2>
+
+            <p class="user-role">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Active User
+
+            </p>
+            
+
+        </div>
+        
+
+    </section>
+    
+
+
+    <!-- ==========================
+        PERSONAL INFORMATION
+    =========================== -->
+
+    <section class="info-card">
+
+        <div class="card-header">
+
+            <i class="fa-solid fa-address-card"></i>
+
+            <h2>Personal Information</h2>
+
+        </div>
+
+        <div class="info-grid">
+
+            <div class="info-item">
+
+                <span class="label">
+
+                    Full Name
+
+                </span>
+
+                <span class="value">
+
+                    {{ session['user_name'] }}
+
+                </span>
+
+            </div>
+
+          
+
+                
+
+            <div class="info-item">
+
+                <span class="label">
+
+                    User ID
+
+                </span>
+
+                <span class="value">
+
+                    #{{ session['user_id'] }}
+
+                </span>
+
+            </div>
+
+            <div class="info-item">
+
+                <span class="label">
+
+                    Account Status
+
+                </span>
+
+                <span class="status active">
+
+                    <i class="fa-solid fa-circle"></i>
+
+                    Active
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+        <!-- ==========================================
+            LOGOUT SECTION
+    =========================================== -->
+
+    <section class="logout-section">
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-btn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </section>
+
+
+    <!-- ==========================================
+            FOOTER
+    =========================================== -->
+
+    <footer class="profile-footer">
+
+        <p>
+
+            © 2026 DataInsight • Smart Data Analytics Platform
+
+        </p>
+
+    </footer>
+
+</div>
+
+
+<!-- ==========================================
+        PROFILE JAVASCRIPT
+=========================================== -->
+
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+
+</body>
+
+</html>
